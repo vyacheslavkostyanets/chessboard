@@ -17,7 +17,11 @@
   display: grid;
   grid-template-columns: repeat(8, 100px);
   grid-template-rows: repeat(8, 100px);
-  width: 700px;
-  height: 800px;
-  background: black;
+  width: max-content;
+  height: max-content;
+  background: rgb(137, 172, 140);
+}
+
+div#root {
+  text-align: center!important;
 }

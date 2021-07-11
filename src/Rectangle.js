@@ -1,7 +1,5 @@
-function Rectangle() {
-    return <svg width="200" height="250" version="1.1" >
-        <rect x="10" y="10" width="30" height="30" stroke="black" fill="transparent" strokeWidth="5" />
-    </svg>
+function Rectangle({ color, xFigureLocation, yFigureLocation }) {
+    return <rect x={xFigureLocation} y={yFigureLocation} width="100" height="100" stroke={color} fill={color} strokeWidth="5" />
 }
 
 export { Rectangle }
