@@ -22,12 +22,32 @@ import './App.css';
 
 
 function ChessDesk() {
-    // const figures = [];
-    const board = []
+    const pieces = [];
+    const board = [];
     let xFigureLocation = 0;
     let yFigureLocation = 0;
     const verticalСhessPieces = ['1', '2', '3', '4', '5', '6', '7', '8'];
     const horizontalСhessPieces = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
+
+
+    verticalСhessPieces.forEach((elV, index) => {
+        pieces.push([]);
+        horizontalСhessPieces.forEach((elH, i) =>
+
+
+
+            pieces[index].push({
+                isPieces: false,
+                namePieces: String,
+                x: elH,
+                y: elV,
+            })
+        )
+    });
+
+
+
+    console.log(pieces, 'pieces')
     for (let v = verticalСhessPieces.length - 1; v >= 0; v--) {
         for (let h = 0; h < horizontalСhessPieces.length; h++) {
             const number = v + h + 2;
@@ -65,7 +85,7 @@ function ChessDesk() {
         <WhiteKing />
         <WhiteQueen />
         <WhiteHorse />
-        <WhiteRook />
+        {/* <WhiteRook /> */}
 
 
     </svg >
