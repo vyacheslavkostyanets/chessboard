@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Blackbishop() {
+function BlackBishop() {
     return <>
         <symbol id="black-bishop" viewBox="0 0 45 45">
             <g
@@ -35,4 +35,4 @@ function Blackbishop() {
         <use href="#black-bishop" x="500" y="100" width="100" height="100"></use>
     </>
 }
-export { Blackbishop }
+export { BlackBishop }
