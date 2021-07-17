@@ -25,6 +25,7 @@ import { BlackPawnSymbol } from './symbolPieces/blackPawnSymbol'
 import { WhitePawnSymbol } from './symbolPieces/whitePawnSymbol'
 import { WhiteKingSymbol } from './symbolPieces/whiteKingSymbol'
 import { WhiteBishopSymbol } from './symbolPieces/whiteBishopSymbol'
+import { Pawn } from './figures/pawn'
 
 function ChessDesk() {
     const board = [];
@@ -34,14 +35,18 @@ function ChessDesk() {
     const whitePawns = [];
     const blackPawns = [];
 
-    for (let i = 0; i < 8; i++) {
-        // whitePawns.push(<Pawn side="black" x={i * 100} y="600" width="100" height="100" />)
-        // whitePawns.push(<Pawn side="white" x={i * 100} y="600" width="100" height="100" />)
-        whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
+    const grabPiece = (e) => {
+        console.log(`${e.clientX}, ${e.clientY}`)
     }
+
     for (let i = 0; i < 8; i++) {
-        blackPawns.push(<BlackPawn x={i * 100} y="100" width="100" height="100" />)
+        whitePawns.push(<Pawn side="white" key={`${i}w`} onMouseMove={grabPiece} onMouseDown={grabPiece} x={i * 100} y="600" width="100" height="100" />)
+        blackPawns.push(<Pawn side="black" key={`${i}b`} onMouseMove={grabPiece} onMouseDown={grabPiece} x={i * 100} y="100" width="100" height="100" />)
+        // whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
     }
+    // for (let i = 0; i < 8; i++) {
+    //     blackPawns.push(<BlackPawn x={i * 100} y="100" width="100" height="100" />)
+    // }
 
 
 
@@ -109,11 +114,17 @@ function ChessDesk() {
         <WhitePawn x="600" y="600" width="100" height="100" />
         <WhitePawn x="700" y="600" width="100" height="100" /> */}
         {whitePawns}
+
+
         <BlackKnight x="100" y="0" width="100" height="100" />
         <BlackKnight x="600" y="0" width="100" height="100" />
         <BlackRook x="0" y="0" width="100" height="100" />
         <BlackRook x="700" y="0" width="100" height="100" />
         <BlacKing x="300" y="0" width="100" height="100" />
+
+
+
+
         {/* <BlackPawn x="0" y="100" width="100" height="100" />
         <BlackPawn x="100" y="100" width="100" height="100" />
         <BlackPawn x="200" y="100" width="100" height="100" />

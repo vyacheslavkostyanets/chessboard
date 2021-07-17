@@ -25,3 +25,6 @@
 div#root {
   text-align: center!important;
 }
+#white-pawns, #black-pawns{
+  cursor: grab;
+}
