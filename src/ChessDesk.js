@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+
 import './App.css';
 import { Rectangle } from './Rectangle'
 import { BlackBishop } from './figures/blackBishop'
@@ -28,26 +29,63 @@ import { WhiteBishopSymbol } from './symbolPieces/whiteBishopSymbol'
 import { Pawn } from './figures/pawn'
 
 function ChessDesk() {
+    const [boardState, setBoardState] = useState({ x: null, y: null, moving: false });
     const board = [];
     const pieces = [];
     const verticalCoordinates = ['1', '2', '3', '4', '5', '6', '7', '8'];
     const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
     const whitePawns = [];
     const blackPawns = [];
+    // let x = 200;
+    // let y = 200;
+    // let moving = false;
 
-    const grabPiece = (e) => {
-        console.log(`${e.clientX}, ${e.clientY}`)
+    const pieceMouseUp = (e) => {
+        console.log(e)
+        // let state = boardState
+        setBoardState({ ...boardState, moving: false })
+
+    }
+    const pieceMouseDown = (e) => {
+        console.log(e)
+        // console.log(`${e.clientX}, ${e.clientY}`)
+        // const x = e.clientY - 100;
+        // e.clientY = x;
+        setBoardState({
+            ...boardState, moving: true,
+
+        })
+    }
+    const pieceMouseMove = (e) => {
+        console.log(e)
+        if (boardState.moving) {
+            setBoardState({
+                ...boardState, x: e.clientX, y: e.clientY, animate: { y: 100 },
+                transition: {
+                    type: "spring",
+                    stiffness: 100
+                }
+            })
+        }
     }
 
     for (let i = 0; i < 8; i++) {
-        whitePawns.push(<Pawn side="white" key={`${i}w`} onMouseMove={grabPiece} onMouseDown={grabPiece} x={i * 100} y="600" width="100" height="100" />)
-        blackPawns.push(<Pawn side="black" key={`${i}b`} onMouseMove={grabPiece} onMouseDown={grabPiece} x={i * 100} y="100" width="100" height="100" />)
+        // setBoardState({ ...boardState, x: i * 100, y: "600" });
+
+        whitePawns.push(<Pawn side="white" key={`${i}w`} onMouseMove={pieceMouseMove} onMouseDown={pieceMouseDown} x={i * 100} y="600" width="100" height="100" />)
+        blackPawns.push(<Pawn side="black" key={`${i}b`} onMouseMove={pieceMouseMove} onMouseDown={pieceMouseDown} x={i * 100} y="100" width="100" height="100" />)
         // whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
     }
     // for (let i = 0; i < 8; i++) {
     //     blackPawns.push(<BlackPawn x={i * 100} y="100" width="100" height="100" />)
     // }
 
+    // blackPawns.push(<Pawn side="black" key="1"
+
+    //     onMouseUp={pieceMouseUp}
+    //     onMouseDown={pieceMouseDown}
+    //     onMouseMove={pieceMouseMove}
+    //     x={boardState.x} y={boardState.y} width="100" height="100" />)
 
 
     console.log(pieces, 'pieces')
