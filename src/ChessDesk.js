@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import './App.css';
+import { getAllPiecesBlack } from './figures/getAllPiecesBlack'
+import { getAllPiecesWhite } from './figures/getAllPiecesWhite'
 import { Rectangle } from './Rectangle'
 import { BlackBishop } from './figures/blackBishop'
 import { BlacKing } from './figures/blackKing'
-import { BlackPawn } from './figures/blackPawn'
-import { WhitePawn } from './figures/whitePawn'
 import { BlackRook } from './figures/blackRook'
 import { BlackKnight } from './figures/blackKnight'
 import { BlackQueen } from './figures/blackQueen'
@@ -29,64 +29,117 @@ import { WhiteBishopSymbol } from './symbolPieces/whiteBishopSymbol'
 import { Pawn } from './figures/pawn'
 
 function ChessDesk() {
-    const [boardState, setBoardState] = useState({ x: null, y: null, moving: false });
+    const [boardState, setBoardState] = useState({ x: 0, y: 100, moving: false, moveY: 0, yCoordinateStartClick: 0 });
     const board = [];
-    const pieces = [];
+    const [pieces, setPieces] = useState([])
     const verticalCoordinates = ['1', '2', '3', '4', '5', '6', '7', '8'];
     const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
-    const whitePawns = [];
-    const blackPawns = [];
+
     // let x = 200;
     // let y = 200;
     // let moving = false;
 
-    const pieceMouseUp = (e) => {
-        console.log(e)
-        // let state = boardState
-        setBoardState({ ...boardState, moving: false })
+    const getHardPieces = (i, j, sideHardPieces, location) => {
+        (sideHardPieces === "black") ? pieces[i].push({ Pieces: getAllPiecesBlack[location] }) : pieces[i].push({ Pieces: getAllPiecesWhite[location] })
+    }
 
+    const getPawn = (i, j, sidePawn) => {
+        pieces[i].push({
+            Pawn: <Pawn side={sidePawn} key={`${horizontalCoordinates[j]}${verticalCoordinates[i]}`}
+                x={j * 100} y="100" width="100" height="100" />
+        })
+    }
+
+    for (let i = 0; i < 8; i++) {
+        pieces.push([])
+        for (let j = 0; j < 8; j++) {
+            switch (i) {
+                case 0:
+                    getHardPieces(i, j, "black", (`${horizontalCoordinates[j]}${verticalCoordinates[i]}`))
+                    break;
+                case 1:
+                    getPawn(i, j, "black");
+                    break;
+                case 2:
+                    pieces[i].push(false);
+                    break;
+                case 3:
+                    pieces[i].push(false);
+                    break;
+                case 4:
+                    pieces[i].push(false);
+                    break;
+                case 5:
+                    pieces[i].push(false);
+                    break;
+                case 6:
+                    getPawn(i, j, "white");
+                    break;
+                case 7:
+                    getHardPieces(i, j, "white", (`${horizontalCoordinates[j]}${verticalCoordinates[i]}`))
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        // whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
+    }
+    console.log(pieces, "pieces right")
+
+    pieces.map((item) => {
+
+    })
+
+    const pieceMouseUp = (e) => {
+        // console.log(e)
+        // let state = boardState
+        setBoardState({ ...boardState, moving: false, moveY: 50 })
+
+        console.log('MOUSE UP')
     }
     const pieceMouseDown = (e) => {
-        console.log(e)
+        // console.log(e)
         // console.log(`${e.clientX}, ${e.clientY}`)
         // const x = e.clientY - 100;
         // e.clientY = x;
         setBoardState({
-            ...boardState, moving: true,
-
+            ...boardState, moving: true, moveY: 100, yCoordinateStartClick: e.clientY
         })
+            ;
+        console.log('MOUSE DOWN')
     }
     const pieceMouseMove = (e) => {
-        console.log(e)
+        console.log(e.clientX, "e.target.clientX")
+
+        console.log(e.clientY, "e.target.clientY")
+
+
         if (boardState.moving) {
-            setBoardState({
-                ...boardState, x: e.clientX, y: e.clientY, animate: { y: 100 },
-                transition: {
-                    type: "spring",
-                    stiffness: 100
-                }
-            })
+
+
+            if (boardState.yCoordinateStartClick + 25 >= e.clientX) {
+                setBoardState({
+                    ...boardState, x: 0, y: 300
+                })
+            }
+
+
         }
     }
 
-    for (let i = 0; i < 8; i++) {
-        // setBoardState({ ...boardState, x: i * 100, y: "600" });
-
-        whitePawns.push(<Pawn side="white" key={`${i}w`} onMouseMove={pieceMouseMove} onMouseDown={pieceMouseDown} x={i * 100} y="600" width="100" height="100" />)
-        blackPawns.push(<Pawn side="black" key={`${i}b`} onMouseMove={pieceMouseMove} onMouseDown={pieceMouseDown} x={i * 100} y="100" width="100" height="100" />)
-        // whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
-    }
-    // for (let i = 0; i < 8; i++) {
-    //     blackPawns.push(<BlackPawn x={i * 100} y="100" width="100" height="100" />)
+    //     whitePawns.push(<Pawn side="white" key={`${i}w`}
+    //         onMouseUp={onMouseUp}
+    //         onMouseMove={pieceMouseMove}
+    //         onMouseDown={pieceMouseDown}
+    //         x={i * 100} y="600" width="100" height="100" />)
+    //     blackPawns.push(<Pawn side="black" key={`${i}b`}
+    //         onMouseUp={onMouseUp}
+    //         onMouseMove={pieceMouseMove}
+    //         onMouseDown={pieceMouseDown}
+    //         x={i * 100} y="100" width="100" height="100" />)
+    //     // whitePawns.push(<WhitePawn x={i * 100} y="600" width="100" height="100" />)
     // }
-
-    // blackPawns.push(<Pawn side="black" key="1"
-
-    //     onMouseUp={pieceMouseUp}
-    //     onMouseDown={pieceMouseDown}
-    //     onMouseMove={pieceMouseMove}
-    //     x={boardState.x} y={boardState.y} width="100" height="100" />)
-
 
     console.log(pieces, 'pieces')
     for (let v = 0; v < verticalCoordinates.length; v++) {
@@ -102,12 +155,6 @@ function ChessDesk() {
             else {
                 board.push(<Rectangle x={x} y={y} width="100" height="100" fill="#EEEED2" stoke="#EEEED2" strokeWidth="5" key={verticalCoordinates[v] + horizontalCoordinates[h]}></Rectangle>)
             }
-            // for (let p = 0; p < 8; p++) {
-            //     if (verticalСhessPieces[h] + horizontalСhessPieces[h] === verticalСhessPieces[p] + horizontalСhessPieces[0]) {
-            //         console.log(verticalСhessPieces[p] + horizontalСhessPieces[0])
-            //     }
-            // }
-
         }
     }
 
@@ -151,7 +198,7 @@ function ChessDesk() {
         <WhitePawn x="500" y="600" width="100" height="100" />
         <WhitePawn x="600" y="600" width="100" height="100" />
         <WhitePawn x="700" y="600" width="100" height="100" /> */}
-        {whitePawns}
+        {/* {whitePawns} */}
 
 
         <BlackKnight x="100" y="0" width="100" height="100" />
@@ -171,7 +218,7 @@ function ChessDesk() {
         <BlackPawn x="500" y="100" width="100" height="100" />
         <BlackPawn x="600" y="100" width="100" height="100" />
         <BlackPawn x="700" y="100" width="100" height="100" /> */}
-        {blackPawns}
+        {/* {blackPawns} */}
         <BlackQueen x="400" y="0" width="100" height="100" />
     </svg >
 }
