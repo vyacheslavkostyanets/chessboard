@@ -21,6 +21,9 @@ import { Knight } from './figures/knight'
 function ChessBoard() {
   const background = [];
   const [side, setSide] = useState('black')
+  const [x] = useState(600)
+  const [y] = useState(0)
+  // const [mouseDown, setMouseDown] = useState(false)
 
   const verticalCoordinates = ['1', '2', '3', '4', '5', '6', '7', '8'];
   const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -45,10 +48,21 @@ function ChessBoard() {
     <PieceSymbols></PieceSymbols>
 
     {background}
-
-    <Knight side={side} onClick={() => {
+    {/* onClick={() => {
       setSide(side === 'black' ? 'white' : 'black');
-    }} x="600" y="0" width="100" height="100" />
+    }} */}
+
+    <Knight side={side} onMouseDown={(e) => {
+      setSide('white')
+      console.log(e);
+    }}
+      onMouseUp={(e) => {
+        setSide('black')
+        console.log(e);
+      }}
+      onMouseMove={(e) => {
+        console.log(e);
+      }} x={x} y={y} width="100" height="100" />
 
     {/* <BlackBishop x="200" y="0" width="100" height="100" />
     <BlackBishop x="500" y="0" width="100" height="100" />
