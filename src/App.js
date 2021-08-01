@@ -1,7 +1,7 @@
-import { ChessDesk } from './ChessDesk'
+import { ChessBoard } from './ChessBoard'
 
 function App() {
-    return <ChessDesk />
+    return <ChessBoard />
 }
 
 export { App }
