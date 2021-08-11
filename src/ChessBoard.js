@@ -23,6 +23,8 @@ function ChessBoard() {
   const background = [];
 
   const [positionKnight, setPositionKnight] = useState({
+    type: "knight",
+    side: "black",
     cellX: 3,
     cellY: 4,
     startX: 0,
@@ -35,7 +37,6 @@ function ChessBoard() {
     startCellY: 0,
   })
 
-  const [side, setSide] = useState('black')
 
   // const [currentX, setCurrentX] = useState(600)
   // const [currentY, setCurrentY] = useState(0)
@@ -179,7 +180,7 @@ function ChessBoard() {
 
     {background}
     {positionKnight.knightStep}
-    <Knight side={side} key="8g"
+    <Knight side={positionKnight.side} key="8g"
 
 
       onMouseDown={(e) => {
