@@ -22,6 +22,17 @@ function ChessBoard() {
   const background = [];
   const [side, setSide] = useState('black')
 
+  const [currentX, setCurrentX] = useState(600)
+  const [currentY, setCurrentY] = useState(0)
+
+  const [startX, setStartX] = useState(0)
+  const [startY, setStartY] = useState(0)
+
+  const [x, setX] = useState(currentX)
+  const [y, setY] = useState(currentY)
+
+  const [mouseDown, setMouseDown] = useState(false)
+
   const verticalCoordinates = ['1', '2', '3', '4', '5', '6', '7', '8'];
   const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
@@ -41,43 +52,43 @@ function ChessBoard() {
     }
   }
 
-  return <svg width="800" height="800" version="1.1">
+  return <svg width="800" height="800" version="1.1" onMouseMove={(e) => {
+    if (mouseDown) {
+      setX(currentX + e.clientX - startX)
+      setY(currentY + e.clientY - startY)
+    }
+  }}
+  >
     <PieceSymbols></PieceSymbols>
 
     {background}
 
-    <Knight side={side} onClick={() => {
-      setSide(side === 'black' ? 'white' : 'black');
-    }} x="600" y="0" width="100" height="100" />
+    <Knight side={side}
 
-    {/* <BlackBishop x="200" y="0" width="100" height="100" />
-    <BlackBishop x="500" y="0" width="100" height="100" />
+      onMouseDown={(e) => {
+        setMouseDown(true)
 
-    <WhiteKnight x="100" y="700" width="100" height="100" />
-    <WhiteKnight x="600" y="700" width="100" height="100" />
-    <WhiteRook x="0" y="700" width="100" height="100" />
-    <WhiteRook x="700" y="700" width="100" height="100" />
-    <WhiteBishop x="200" y="700" width="100" height="100" />
-    <WhiteBishop x="500" y="700" width="100" height="100" />
-    <WhiteKing x="300" y="700" width="100" height="100" />
-    <WhiteQueen x="400" y="700" width="100" height="100" />
-    <BlackKnight x="100" y="0" width="100" height="100" />
-    <BlackKnight x="600" y="0" width="100" height="100" />
-    <BlackRook x="0" y="0" width="100" height="100" />
-    <BlackRook x="700" y="0" width="100" height="100" />
-    <BlacKing x="300" y="0" width="100" height="100" /> */}
+        setStartX(e.clientX);
+        setStartY(e.clientY);
 
-    {/* <BlackPawn x="0" y="100" width="100" height="100" />
-        <BlackPawn x="100" y="100" width="100" height="100" />
-        <BlackPawn x="200" y="100" width="100" height="100" />
-        <BlackPawn x="300" y="100" width="100" height="100" />
-        <BlackPawn x="400" y="100" width="100" height="100" />
-        <BlackPawn x="500" y="100" width="100" height="100" />
-        <BlackPawn x="600" y="100" width="100" height="100" />
-        <BlackPawn x="700" y="100" width="100" height="100" /> */}
-    {/* {blackPawns} */}
+        console.log(e);
+      }}
 
-    {/* <BlackQueen x="400" y="0" width="100" height="100" /> */}
+      onMouseUp={(e) => {
+        setMouseDown(false)
+
+        let cx = currentX + (e.clientX - startX) // 523
+        let cy = currentY + (e.clientY - startY) // 423
+
+        setCurrentX(cx - (cx % 100))
+        setCurrentY(cy - (cy % 100))
+
+        setX(x - (cx % 100))
+        setY(y - (cy % 100))
+
+        console.log(e);
+      }}
+      x={x} y={y} width="100" height="100" />
   </svg >
 }
 
