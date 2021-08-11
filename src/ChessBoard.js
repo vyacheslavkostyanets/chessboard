@@ -22,14 +22,17 @@ function ChessBoard() {
   const myRef = useRef()
   const background = [];
 
-  const [position, setPosition] = useState({
-    cellX: 0,
-    cellY: 0,
+  const [positionKnight, setPositionKnight] = useState({
+    cellX: 3,
+    cellY: 4,
     startX: 0,
     startY: 0,
-    x: 600,
-    y: 0,
-    mouseDown: false
+    x: 300,
+    y: 400,
+    mouseDown: false,
+    knightStep: [],
+    startCellX: 0,
+    startCellY: 0,
   })
 
   const [side, setSide] = useState('black')
@@ -68,16 +71,102 @@ function ChessBoard() {
     }
   }
 
+  const setKnightNewPosition = (startSellPositionX, startSellPositionY, setPositionX, setPositionY) => {
+    let newPositionX = 0
+    let newPositionY = 0
+
+
+    if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === 2) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === 2) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === 1) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === 1) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === -2) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === -2) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === -1) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === -1) {
+      newPositionY = setPositionY;
+      newPositionX = setPositionX;
+    }
+    else {
+      newPositionY = startSellPositionY;
+      newPositionX = startSellPositionX;
+    }
+    console.log(newPositionY, "newPositionY")
+    console.log(newPositionX, "newPositionX")
+    return setPositionKnight((prevState => {
+      return {
+        ...prevState,
+        x: newPositionX * 100,
+        y: newPositionY * 100,
+        mouseDown: false,
+        knightStep: []
+      };
+    }))
+
+  }
+
+  const nextKnightPosition = (xBoard, yBoard) => {
+    let knightPosition = []
+
+    if (xBoard + 2 < 8 && yBoard + 1 < 8) {
+      knightPosition.push(<Rectangle x={(xBoard + 2) * 100} y={(yBoard + 1) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard + 2}, ${yBoard + 1} `}> </Rectangle>)
+    }
+    if (xBoard + 1 < 8 && yBoard + 2 < 8) {
+      knightPosition.push(<Rectangle x={(xBoard + 1) * 100} y={(yBoard + 2) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard + 1}, ${yBoard + 2} `}> </Rectangle>)
+    }
+    if (xBoard - 2 >= 0 && yBoard - 1 >= 0) {
+      knightPosition.push(<Rectangle x={(xBoard - 2) * 100} y={(yBoard - 1) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard - 1}, ${yBoard - 2} `}> </Rectangle>)
+    }
+    if (xBoard - 1 >= 0 && yBoard - 2 >= 0) {
+      knightPosition.push(<Rectangle x={(xBoard - 1) * 100} y={(yBoard - 2) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard - 2}, ${yBoard - 2} `}> </Rectangle>)
+    }
+    if (xBoard + 2 < 8 && yBoard - 1 >= 0) {
+      knightPosition.push(<Rectangle x={(xBoard + 2) * 100} y={(yBoard - 1) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard + 2}, ${yBoard - 1} `}> </Rectangle>)
+    }
+    if (xBoard - 1 >= 0 && yBoard + 2 < 8) {
+      knightPosition.push(<Rectangle x={(xBoard - 1) * 100} y={(yBoard + 2) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard - 1}, ${yBoard + 2} `}> </Rectangle>)
+    }
+    if (xBoard - 2 >= 0 && yBoard + 1 < 8) {
+      knightPosition.push(<Rectangle x={(xBoard - 2) * 100} y={(yBoard + 1) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard - 2}, ${yBoard + 1} `}> </Rectangle>)
+    }
+    if (xBoard + 1 < 8 && yBoard - 2 >= 0) {
+      knightPosition.push(<Rectangle x={(xBoard + 1) * 100} y={(yBoard - 2) * 100} width="100" height="100" fill="#152640" stoke="#FFDD00" strokeWidth="5" key={`${xBoard + 1}, ${yBoard - 2} `}> </Rectangle>)
+    }
+    return knightPosition
+  }
+
+  console.log(positionKnight.knightStep, "knightStep")
   return <svg ref={myRef} width="800" height="800" version="1.1"
     onMouseMove={(e) => {
       const { x, y } = myRef.current.getBoundingClientRect()
 
-      if (position.mouseDown) {
-        setPosition((prevState => {
+      if (positionKnight.mouseDown) {
+        setPositionKnight((prevState => {
           return {
             ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true,
-            x: position.x + e.clientX - position.startX,
-            y: position.y + e.clientY - position.startY,
+            x: positionKnight.x + e.clientX - positionKnight.startX,
+            y: positionKnight.y + e.clientY - positionKnight.startY,
             cellX: Math.floor(((e.clientX - x) / 100)),
             cellY: Math.floor(((e.clientY - y) / 100)),
           };
@@ -89,30 +178,47 @@ function ChessBoard() {
     <PieceSymbols></PieceSymbols>
 
     {background}
-
+    {positionKnight.knightStep}
     <Knight side={side} key="8g"
 
 
       onMouseDown={(e) => {
-        setPosition((prevState => {
-          return { ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true };
-        }))
-      }}
 
-      onMouseUp={(e) => {
+        const { x, y } = myRef.current.getBoundingClientRect()
+        let xBoard = Math.floor(((e.clientX - x) / 100))
+        let yBoard = Math.floor(((e.clientY - y) / 100))
+        console.log(xBoard, "xxx")
+        console.log(yBoard, "yyy")
 
-        setPosition((prevState => {
+
+
+        setPositionKnight((prevState => {
           return {
-            ...prevState,
-            x: position.cellX * 100,
-            y: position.cellY * 100,
-            mouseDown: false
+            ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true,
+            startCellX: xBoard,
+            startCellY: yBoard,
+            knightStep: nextKnightPosition(xBoard, yBoard)
           };
         }))
+      }
+      }
 
+      onMouseUp={(e) => {
+        console.log(setKnightNewPosition(positionKnight.startCellX, positionKnight.startCellY, positionKnight.cellX, positionKnight.cellY), "setKnightNewPosition(position.startX, position.startY)");
 
+        setKnightNewPosition(positionKnight.startCellX, positionKnight.startCellY, positionKnight.cellX, positionKnight.cellY);
+
+        // setPosition((prevState => {
+        //   return {
+        //     ...prevState,
+        //     x: position.cellX * 100,
+        //     y: position.cellY * 100,
+        //     mouseDown: false,
+        //     // knightStep: []
+        //   };
+        // }))
       }}
-      x={position.x} y={position.y} width="100" height="100" />
+      x={positionKnight.x} y={positionKnight.y} width="100" height="100" />
   </svg >
 }
 
