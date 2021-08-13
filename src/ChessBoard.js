@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react'
 
 import './App.css';
-import { Rectangle } from './Rectangle'
-import { PieceSymbols } from './symbolPieces/piecesSymbol'
+import { Rectangle } from './Rectangle';
+import { PieceSymbols } from './symbolPieces/piecesSymbol';
+import { Piece } from './figures/piece';
+import { Rook } from './figures/rook'
 import { Knight } from './figures/knight'
 // import { getAllPiecesBlack } from './figures/getAllPiecesBlack'
 // import { getAllPiecesWhite } from './figures/getAllPiecesWhite'
@@ -20,9 +22,10 @@ import { Knight } from './figures/knight'
 
 function ChessBoard() {
   const myRef = useRef()
+  const pieces = [];
   const background = [];
 
-  const [positionKnight, setPositionKnight] = useState({
+  const [pieceStates, setPieceStates] = useState([{
     type: "knight",
     side: "black",
     cellX: 3,
@@ -35,23 +38,46 @@ function ChessBoard() {
     knightStep: [],
     startCellX: 0,
     startCellY: 0,
-  })
-
-
-  // const [currentX, setCurrentX] = useState(600)
-  // const [currentY, setCurrentY] = useState(0)
-
-  // const [startX, setStartX] = useState(0)
-  // const [startY, setStartY] = useState(0)
-
-  // const [x, setX] = useState(currentX)
-  // const [y, setY] = useState(currentY)
-
-  // const [newPositionX, setNewPositionX] = useState(0)
-  // const [newPositionY, setNewPositionY] = useState(0)
-
-
-  // const [mouseDown, setMouseDown] = useState(false)
+  }, {
+    type: "rook",
+    side: "black",
+    cellX: 4,
+    cellY: 7,
+    startX: 0,
+    startY: 0,
+    x: 400,
+    y: 700,
+    mouseDown: false,
+    knightStep: [],
+    startCellX: 0,
+    startCellY: 0,
+  }, {
+    type: "rook",
+    side: "black",
+    cellX: 4,
+    cellY: 7,
+    startX: 0,
+    startY: 0,
+    x: 400,
+    y: 700,
+    mouseDown: false,
+    knightStep: [],
+    startCellX: 0,
+    startCellY: 0,
+  }, {
+    type: "king",
+    side: "white",
+    cellX: 4,
+    cellY: 7,
+    startX: 0,
+    startY: 0,
+    x: 700,
+    y: 100,
+    mouseDown: false,
+    knightStep: [],
+    startCellX: 0,
+    startCellY: 0,
+  }])
 
   const verticalCoordinates = ['8', '7', '6', '5', '4', '3', '2', '1'];
   const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
@@ -72,60 +98,67 @@ function ChessBoard() {
     }
   }
 
-  const setKnightNewPosition = (startSellPositionX, startSellPositionY, setPositionX, setPositionY) => {
-    let newPositionX = 0
-    let newPositionY = 0
-
-
-    if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === 2) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === 2) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === 1) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === 1) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === -2) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === -2) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === -1) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === -1) {
-      newPositionY = setPositionY;
-      newPositionX = setPositionX;
-    }
-    else {
-      newPositionY = startSellPositionY;
-      newPositionX = startSellPositionX;
-    }
-    console.log(newPositionY, "newPositionY")
-    console.log(newPositionX, "newPositionX")
-    return setPositionKnight((prevState => {
-      return {
-        ...prevState,
-        x: newPositionX * 100,
-        y: newPositionY * 100,
-        mouseDown: false,
-        knightStep: []
-      };
-    }))
-
+  for (const pieceState of pieceStates) {
+    pieces.push(<Piece side={pieceState.side} type={pieceState.type} x={pieceState.x} y={pieceState.y} width="100" height="100" />)
   }
+
+
+
+
+  // const setKnightNewPosition = (startSellPositionX, startSellPositionY, setPositionX, setPositionY) => {
+  //   let newPositionX = 0
+  //   let newPositionY = 0
+
+
+  //   if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === 2) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === 2) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === 1) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === 1) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === -1 && setPositionY - startSellPositionY === -2) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === 1 && setPositionY - startSellPositionY === -2) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === -2 && setPositionY - startSellPositionY === -1) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else if (setPositionX - startSellPositionX === 2 && setPositionY - startSellPositionY === -1) {
+  //     newPositionY = setPositionY;
+  //     newPositionX = setPositionX;
+  //   }
+  //   else {
+  //     newPositionY = startSellPositionY;
+  //     newPositionX = startSellPositionX;
+  //   }
+  //   console.log(newPositionY, "newPositionY")
+  //   console.log(newPositionX, "newPositionX")
+  //   return setPieceStates((prevState => {
+  //     return {
+  //       ...prevState,
+  //       x: newPositionX * 100,
+  //       y: newPositionY * 100,
+  //       mouseDown: false,
+  //       knightStep: []
+  //     };
+  //   }))
+
+  // }
 
   const nextKnightPosition = (xBoard, yBoard) => {
     let knightPosition = []
@@ -157,17 +190,17 @@ function ChessBoard() {
     return knightPosition
   }
 
-  console.log(positionKnight.knightStep, "knightStep")
+  console.log(pieceStates.knightStep, "knightStep")
   return <svg ref={myRef} width="800" height="800" version="1.1"
     onMouseMove={(e) => {
       const { x, y } = myRef.current.getBoundingClientRect()
 
-      if (positionKnight.mouseDown) {
-        setPositionKnight((prevState => {
+      if (pieceStates.mouseDown) {
+        setPieceStates((prevState => {
           return {
             ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true,
-            x: positionKnight.x + e.clientX - positionKnight.startX,
-            y: positionKnight.y + e.clientY - positionKnight.startY,
+            x: pieceStates.x + e.clientX - pieceStates.startX,
+            y: pieceStates.y + e.clientY - pieceStates.startY,
             cellX: Math.floor(((e.clientX - x) / 100)),
             cellY: Math.floor(((e.clientY - y) / 100)),
           };
@@ -179,9 +212,12 @@ function ChessBoard() {
     <PieceSymbols></PieceSymbols>
 
     {background}
-    {positionKnight.knightStep}
-    <Knight side={positionKnight.side} key="8g"
+    {pieces}
 
+    {/* <Piece side={pieceStates[0].side} type="knight" x={250} y={300} width="100" height="100" />
+    <Piece side={pieceStates[0].side} type="rook" x={250} y={300} width="100" height="100" />
+    <Piece side={pieceStates[0].side} type="rook" x={400} y={400} width="100" height="100" />
+    <Piece side={pieceStates[0].side} type="knight" x={pieceStates.x} y={pieceStates.y} width="100" height="100"
 
       onMouseDown={(e) => {
 
@@ -193,7 +229,7 @@ function ChessBoard() {
 
 
 
-        setPositionKnight((prevState => {
+        setPieceStates((prevState => {
           return {
             ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true,
             startCellX: xBoard,
@@ -205,9 +241,9 @@ function ChessBoard() {
       }
 
       onMouseUp={(e) => {
-        console.log(setKnightNewPosition(positionKnight.startCellX, positionKnight.startCellY, positionKnight.cellX, positionKnight.cellY), "setKnightNewPosition(position.startX, position.startY)");
+        console.log(setKnightNewPosition(pieceStates.startCellX, pieceStates.startCellY, pieceStates.cellX, pieceStates.cellY), "setKnightNewPosition(position.startX, position.startY)");
 
-        setKnightNewPosition(positionKnight.startCellX, positionKnight.startCellY, positionKnight.cellX, positionKnight.cellY);
+        setKnightNewPosition(pieceStates.startCellX, pieceStates.startCellY, pieceStates.cellX, pieceStates.cellY);
 
         // setPosition((prevState => {
         //   return {
@@ -219,7 +255,8 @@ function ChessBoard() {
         //   };
         // }))
       }}
-      x={positionKnight.x} y={positionKnight.y} width="100" height="100" />
+    /> */}
+
   </svg >
 }
 
