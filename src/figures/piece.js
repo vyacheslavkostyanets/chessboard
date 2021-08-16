@@ -8,7 +8,7 @@ import { King } from "./king";
 
 
 export function Piece(props) {
-    console.log(props.type, "props.type")
+    // console.log(props.type, "props.type")
     // for (let i = 0; i < 8; i++) {
     //     for (let j = 0; j < 8; j++) {
     //         let cellX = x[j];

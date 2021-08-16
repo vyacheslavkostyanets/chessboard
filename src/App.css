@@ -28,3 +28,7 @@ div#root {
 #white-pawns, #black-pawns{
   cursor: grab;
 }
+
+.index {
+  z-index: 10;
+}

@@ -25,61 +25,173 @@ function ChessBoard() {
   const pieces = [];
   const background = [];
 
+  const [mouseDown, setMouseDown] = useState(false)
+  const [start, setStart] = useState({ startX: 0, startY: 0, cellX: 0, cellY: 0, initialX: 0, initialY: 0, index: 0 })
+
   const [pieceStates, setPieceStates] = useState([{
+    type: "rook",
+    side: "black",
+    x: 0,
+    y: 0,
+  }, {
     type: "knight",
     side: "black",
-    cellX: 3,
-    cellY: 4,
-    startX: 0,
-    startY: 0,
+    x: 100,
+    y: 0,
+  }, {
+    type: "bishop",
+    side: "black",
+    x: 200,
+    y: 0,
+  }, {
+    type: "king",
+    side: "black",
     x: 300,
-    y: 400,
-    mouseDown: false,
-    knightStep: [],
-    startCellX: 0,
-    startCellY: 0,
+    y: 0,
+  }, {
+    type: "queen",
+    side: "black",
+    x: 400,
+    y: 0,
+  }, {
+    type: "bishop",
+    side: "black",
+    x: 500,
+    y: 0,
+  }, {
+    type: "knight",
+    side: "black",
+    x: 600,
+    y: 0,
   }, {
     type: "rook",
     side: "black",
-    cellX: 4,
-    cellY: 7,
-    startX: 0,
-    startY: 0,
+    x: 700,
+    y: 0,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 0,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 100,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 200,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 300,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
     x: 400,
-    y: 700,
-    mouseDown: false,
-    knightStep: [],
-    startCellX: 0,
-    startCellY: 0,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 500,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 600,
+    y: 100,
+  }, {
+    type: "pawn",
+    side: "black",
+    x: 700,
+    y: 100,
   }, {
     type: "rook",
-    side: "black",
-    cellX: 4,
-    cellY: 7,
-    startX: 0,
-    startY: 0,
-    x: 400,
+    side: "white",
+    x: 0,
     y: 700,
-    mouseDown: false,
-    knightStep: [],
-    startCellX: 0,
-    startCellY: 0,
+  }, {
+    type: "knight",
+    side: "white",
+    x: 100,
+    y: 700,
+  }, {
+    type: "bishop",
+    side: "white",
+    x: 200,
+    y: 700,
   }, {
     type: "king",
     side: "white",
-    cellX: 4,
-    cellY: 7,
-    startX: 0,
-    startY: 0,
+    x: 400,
+    y: 700,
+  }, {
+    type: "queen",
+    side: "white",
+    x: 300,
+    y: 700,
+  }, {
+    type: "bishop",
+    side: "white",
+    x: 500,
+    y: 700,
+  }, {
+    type: "knight",
+    side: "white",
+    x: 600,
+    y: 700,
+  }, {
+    type: "rook",
+    side: "white",
     x: 700,
-    y: 100,
-    mouseDown: false,
-    knightStep: [],
-    startCellX: 0,
-    startCellY: 0,
-  }])
+    y: 700,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 0,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 100,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 200,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 300,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 400,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 500,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 600,
+    y: 600,
+  }, {
+    type: "pawn",
+    side: "white",
+    x: 700,
+    y: 600,
+  }
+  ])
 
-  const verticalCoordinates = ['8', '7', '6', '5', '4', '3', '2', '1'];
+  const verticalCoordinates = ['1', '2', '3', '4', '5', '6', '7', '8'];
   const horizontalCoordinates = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'];
 
   for (let v = 0; v < verticalCoordinates.length; v++) {
@@ -90,20 +202,74 @@ function ChessBoard() {
       let y = verticalCoordinates.indexOf(verticalCoordinates[v]) * 100;
 
       if (number % 2 === 0) {
-        background.push(<Rectangle x={x} y={y} width="100" height="100" fill="#769656" stoke="#769656" strokeWidth="5" key={verticalCoordinates[v] + horizontalCoordinates[h]}> </Rectangle>)
+        background.push(<Rectangle x={x} y={y} width="100" height="100" fill="#EEEED2" stoke="#EEEED2" strokeWidth="5" key={verticalCoordinates[v] + horizontalCoordinates[h]}> </Rectangle>)
       }
       else {
-        background.push(<Rectangle x={x} y={y} width="100" height="100" fill="#EEEED2" stoke="#EEEED2" strokeWidth="5" key={verticalCoordinates[v] + horizontalCoordinates[h]}></Rectangle>)
+        background.push(<Rectangle x={x} y={y} width="100" height="100" fill="#769656" stoke="#769656" strokeWidth="5" key={verticalCoordinates[v] + horizontalCoordinates[h]}></Rectangle>)
       }
     }
   }
 
-  for (const pieceState of pieceStates) {
-    pieces.push(<Piece side={pieceState.side} type={pieceState.type} x={pieceState.x} y={pieceState.y} width="100" height="100" />)
+
+  const onMouseDown = (e, pieceState, i) => {
+    const { x, y } = myRef.current.getBoundingClientRect()
+    let xBoard = (Math.floor(((e.clientX - x) / 100))) * 100;
+    let yBoard = (Math.floor(((e.clientY - y) / 100))) * 100;
+    console.log(e.target, "target")
+    setStart({ startX: e.clientX, startY: e.clientY, cellX: xBoard, cellY: yBoard, initialX: pieceState.x, initialY: pieceState.y, index: i })
+    setMouseDown(true)
   }
 
 
+  // const onMouseMove = (e, pieceState, i) => {
+  //   if (mouseDown) {
 
+  //     let x = start.initialX + e.clientX - start.startX;
+  //     let y = start.initialY + e.clientY - start.startY;
+
+  //     setPieceStates(prev => {
+  //       let states = prev.slice();
+  //       states[i] = {
+  //         ...pieceState,
+  //         x: x,
+  //         y: y,
+
+  //       }
+  //       return states;
+  //     });
+  //   }
+  // }
+
+  const onMouseUp = (e, pieceState, i) => {
+
+
+    setPieceStates(prev => {
+      let states = prev.slice();
+
+      console.log(start.cellX, "отжимаем start.cellX")
+
+      states[i] = {
+        ...pieceState,
+
+        x: start.cellX,
+        y: start.cellY,
+
+      }
+      return states;
+    });
+
+    setMouseDown(false)
+  }
+
+
+  for (let i = 0; i < pieceStates.length; i++) {
+    let pieceState = pieceStates[i];
+    pieces.push(<Piece key={i}
+      onMouseUp={(e) => onMouseUp(e, pieceState, i)}
+      onMouseDown={(e) => onMouseDown(e, pieceState, i)}
+      // onMouseMove={(e) => onMouseMove(e, pieceState, i)}
+      side={pieceState.side} type={pieceState.type} x={pieceState.x} y={pieceState.y} width="100" height="100" />)
+  }
 
   // const setKnightNewPosition = (startSellPositionX, startSellPositionY, setPositionX, setPositionY) => {
   //   let newPositionX = 0
@@ -190,22 +356,47 @@ function ChessBoard() {
     return knightPosition
   }
 
-  console.log(pieceStates.knightStep, "knightStep")
+  // console.log(pieceStates.knightStep, "knightStep")
   return <svg ref={myRef} width="800" height="800" version="1.1"
     onMouseMove={(e) => {
-      const { x, y } = myRef.current.getBoundingClientRect()
 
-      if (pieceStates.mouseDown) {
-        setPieceStates((prevState => {
-          return {
-            ...prevState, startX: e.clientX, startY: e.clientY, mouseDown: true,
-            x: pieceStates.x + e.clientX - pieceStates.startX,
-            y: pieceStates.y + e.clientY - pieceStates.startY,
-            cellX: Math.floor(((e.clientX - x) / 100)),
-            cellY: Math.floor(((e.clientY - y) / 100)),
-          };
-        }))
+      // if (mouseDown) {
+      //   const { x, y } = myRef.current.getBoundingClientRect()
+      //   console.log(x, "x svg")
+      //   console.log(y, "y svg")
+      //   setStart((prev) => {
+      //     return { ...prev, cellX: Math.floor(((e.clientX - x) / 100)), cellY: Math.floor(((e.clientY - y) / 100)) }
+      //   })
+      // }
+
+
+      if (mouseDown) {
+
+        const { x, y } = myRef.current.getBoundingClientRect()
+        let axisSvgX = (Math.floor((e.clientX - x) / 100)) * 100
+        let axisSvgY = (Math.floor((e.clientY - y) / 100)) * 100
+        console.log(axisSvgX, "x svg")
+        console.log(axisSvgY, "y svg")
+
+        let axisX = start.initialX + e.clientX - start.startX;
+        let axisY = start.initialY + e.clientY - start.startY;
+
+        setPieceStates(pieceStatesPrev => {
+          let piceStatesNext = pieceStatesPrev.slice();
+          let pieceState = pieceStatesPrev[start.index]
+          piceStatesNext[start.index] = {
+            ...pieceState,
+            x: axisX,
+            y: axisY,
+          }
+          return piceStatesNext;
+        });
+        setStart((prevState) => {
+          return { ...prevState, cellX: axisSvgX, cellY: axisSvgY }
+        })
       }
+
+
     }
     }
   >
@@ -261,3 +452,4 @@ function ChessBoard() {
 }
 
 export { ChessBoard }
+
